@@ -2,44 +2,34 @@
 #include "Wire.h"
 #define Led 2
 #define button 6
+long temps = 0;
+int valeurled = 0;
 
 void clignote();
-void attendreRelachementBouton();
-
-unsigned long previousMillis = 0;
-const long interval = 2000;
 
 void setup() {
+  // put your setup code here, to run once:
   pinMode(button, INPUT);
   pinMode(Led, OUTPUT);
+
 }
 
 void loop() {
   int valeur_button = digitalRead(button);
-
-  if (valeur_button == LOW) {
-    clignote();
-    attendreRelachementBouton();
-  } else {
-    digitalWrite(Led, LOW);
+  if(valeur_button == 0){
+      clignote();
+  }else{
+    digitalWrite(Led,0);
   }
 }
 
-void clignote() {
-  unsigned long currentMillis = millis();
 
-  if (currentMillis - previousMillis >= interval) {
-    previousMillis = currentMillis;
 
-    digitalWrite(Led, 1);
-    delay(200);
-    digitalWrite(Led, 0);
+void clignote(){
+  if((millis()-temps ) > 1000){
+    digitalWrite(Led, !digitalRead(Led));
+    temps = millis();    
   }
 }
 
-void attendreRelachementBouton() {
-  // Attendre que le bouton soit relâché
-  while (digitalRead(button) == LOW) {
-    delay(50);
-  }
-}
+//clignotement  
