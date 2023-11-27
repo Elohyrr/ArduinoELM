@@ -4,28 +4,42 @@
 #define button 6
 
 void clignote();
+void attendreRelachementBouton();
+
+unsigned long previousMillis = 0;
+const long interval = 2000;
 
 void setup() {
-  // put your setup code here, to run once:
   pinMode(button, INPUT);
   pinMode(Led, OUTPUT);
-
 }
 
 void loop() {
   int valeur_button = digitalRead(button);
-  if(valeur_button == 0){
-      clignote();
-  }else{
-    digitalWrite(Led,0);
+
+  if (valeur_button == LOW) {
+    clignote();
+    attendreRelachementBouton();
+  } else {
+    digitalWrite(Led, LOW);
   }
 }
 
-void clignote(){
-  delay(2000);
-  digitalWrite(Led, 1);
-  delay(2000);
-  digitalWrite(Led, 0);
+void clignote() {
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+
+    digitalWrite(Led, 1);
+    delay(200);
+    digitalWrite(Led, 0);
+  }
 }
 
-//clignotement  
+void attendreRelachementBouton() {
+  // Attendre que le bouton soit relâché
+  while (digitalRead(button) == LOW) {
+    delay(50);
+  }
+}
