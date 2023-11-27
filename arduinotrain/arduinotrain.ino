@@ -27,3 +27,5 @@ void clignote(){
   delay(2000);
   digitalWrite(Led, 0);
 }
+
+//clignotement  
